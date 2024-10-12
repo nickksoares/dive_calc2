@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plano de Mergulho</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+
+        h1 {
+            background-color: yellow;
+            padding: 10px;
+            margin-bottom: 30px;
+        }
+
+        .form-container {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .column {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .field {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        input {
+            margin-top: 5px;
+            padding: 5px;
+            width: 100px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>PLANO DE MERGULHO</h1>
+
+    <div>
+        <label for="is">IS:</label>
+        <input type="text" id="is" name="is">
+        <label for="grupo">Grupo:</label>
+        <input type="text" id="grupo" name="grupo" pattern="[A-OZ]" title="Somente letras de A até O e Z, maiúsculas">
+    </div>
+
+    <div class="form-container">
+        <!-- Coluna Esquerda -->
+        <div class="column">
+            <div class="field">
+                <label for="ds">DS</label>
+                <input type="text" id="ds" name="ds" pattern="\d{2}:\d{2}" title="Formato hh:mm">
+            </div>
+            <div class="line"></div>
+            <div class="field">
+                <label for="prof">Prof.</label>
+                <input type="text" id="prof" name="prof">
+            </div>
+            <div class="line"></div>
+            <div class="field">
+                <label for="tf">TF</label>
+                <input type="text" id="tf" name="tf" pattern="\d{2}:\d{2}" title="Formato hh:mm">
+            </div>
+            <div class="field">
+                <label for="cf">CF</label>
+                <input type="text" id="cf" name="cf" pattern="\d{2}:\d{2}" title="Formato hh:mm">
+            </div>
+            <div class="field">
+                <label for="df">DF</label>
+                <input type="text" id="df" name="df" pattern="\d{2}:\d{2}" title="Formato hh:mm">
+            </div>
+        </div>
+
+        <!-- Coluna Direita -->
+        <div class="column">
+            <div class="field">
+                <label for="cs">CS</label>
+                <input type="text" id="cs" name="cs" pattern="\d{2}:\d{2}" title="Formato hh:mm">
+            </div>
+            <div class="line"></div>
+            <div class="field">
+                <label for="s">S</label>
+                <input type="text" id="s" name="s" pattern="\d{2}:\d{2}" title="Formato hh:mm">
+            </div>
+            <div class="field">
+                <label for="c">C</label>
+                <input type="text" id="c" name="c" pattern="\d{2}:\d{2}" title="Formato hh:mm">
+            </div>
+            <div class="field">
+                <label for="ttd">TTD</label>
+                <input type="text" id="ttd" name="ttd" pattern="\d{2}:\d{2}" title="Formato hh:mm">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('input[pattern="\\d{2}:\\d{2}"]').forEach(input => {
+            input.addEventListener('input', function (e) {
+                if (this.value.length === 2 && !this.value.includes(':')) {
+                    this.value = this.value + ':';
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

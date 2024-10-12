@@ -1,3 +1,4 @@
+import 'package:dive_calc2/screens/dive_plan_screen.dart';
 import 'package:flutter/material.dart';
 import 'events_screen.dart';
 import 'refloat_screen.dart';
@@ -40,7 +41,8 @@ class MainScreen extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const RefloatScreen()),
+                  MaterialPageRoute(
+                      builder: (context) => const RefloatScreen()),
                 );
               },
             ),
@@ -57,16 +59,17 @@ class MainScreen extends StatelessWidget {
               Container(
                 margin: const EdgeInsets.only(top: 20.0, bottom: 40.0),
                 child: Image.asset(
-                  'assets/logo.png', // Make sure to add your logo in the assets folder and update the path
+                  'assets/logo.png', // Certifique-se de que o logotipo está no caminho correto
                   height: 100.0,
                 ),
               ),
-              // Four Elevated Buttons
+              // Quatro botões elevados
               ElevatedButton(
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const EventsScreen()),
+                    MaterialPageRoute(
+                        builder: (context) => const EventsScreen()),
                   );
                 },
                 child: const Text('Ocorrências'),
@@ -76,7 +79,8 @@ class MainScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const EventsScreen()),
+                    MaterialPageRoute(
+                        builder: (context) => const EventsScreen()),
                   );
                 },
                 child: const Text('Pré-Planejamento'),
@@ -84,16 +88,21 @@ class MainScreen extends StatelessWidget {
               const SizedBox(height: 20.0),
               ElevatedButton(
                 onPressed: () {
-                  // Add your onPressed code here!
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => HtmlFromAssetsPage()),
+                  );
                 },
-                child: const Text('Button 3'),
+                child: const Text('Plano de Mergulho'),
               ),
               const SizedBox(height: 20.0),
               ElevatedButton(
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const RefloatScreen()),
+                    MaterialPageRoute(
+                        builder: (context) => const RefloatScreen()),
                   );
                 },
                 child: const Text('Reflutuação'),
@@ -104,10 +113,4 @@ class MainScreen extends StatelessWidget {
       ),
     );
   }
-}
-
-void main() {
-  runApp(const MaterialApp(
-    home: MainScreen(),
-  ));
 }
