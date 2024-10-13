@@ -20,11 +20,13 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class HtmlFromAssetsPage extends StatefulWidget {
+  const HtmlFromAssetsPage({super.key});
+
   @override
-  _HtmlFromAssetsPageState createState() => _HtmlFromAssetsPageState();
+  HtmlFromAssetsPageState createState() => HtmlFromAssetsPageState();
 }
 
-class _HtmlFromAssetsPageState extends State<HtmlFromAssetsPage> {
+class HtmlFromAssetsPageState extends State<HtmlFromAssetsPage> {
   late WebViewController _controller;
 
   @override
@@ -35,6 +37,7 @@ class _HtmlFromAssetsPageState extends State<HtmlFromAssetsPage> {
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(
         NavigationDelegate(
+          // ignore: non_constant_identifier_names
           onProgress: (int Progress) {},
           onPageStarted: (String url) {},
           onPageFinished: (String url) {},

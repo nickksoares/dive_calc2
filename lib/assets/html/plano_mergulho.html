@@ -1,118 +1,186 @@
+<!-- <DiveCalc is an app to help Public Safety Divers>
+Copyright (C) <2024>  <Nicollas Soares Goncalves>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
+
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plano de Mergulho</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 20px;
-        }
-
         h1 {
             background-color: yellow;
-            padding: 10px;
-            margin-bottom: 30px;
+            text-align: center;
         }
 
-        .form-container {
+        .input-group {
+            margin: 10px 0;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .row {
             display: flex;
-            justify-content: space-around;
+            justify-content: space-between;
+            position: relative;
+            /* Necessário para posicionar a linha */
         }
 
         .column {
+            flex: 1;
+            margin-right: 10px;
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
+            justify-content: space-between;
         }
 
-        .field {
-            margin-bottom: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
+        .column:last-child {
+            margin-right: 0;
         }
 
-        input {
-            margin-top: 5px;
-            padding: 5px;
-            width: 100px;
-            text-align: center;
+        input[type="number"] {
+            max-width: 100px;
+            /* Ajusta o tamanho da caixa de texto "Prof." */
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
         }
     </style>
 </head>
 
 <body>
-    <h1>PLANO DE MERGULHO</h1>
+    <h1>Plano de Mergulho</h1>
 
-    <div>
-        <label for="is">IS:</label>
-        <input type="text" id="is" name="is">
-        <label for="grupo">Grupo:</label>
-        <input type="text" id="grupo" name="grupo" pattern="[A-OZ]" title="Somente letras de A até O e Z, maiúsculas">
+    <!-- Canvas para desenhar as linhas -->
+    <canvas id="canvas"></canvas>
+
+    <div class="row">
+        <div class="input-group">
+            <label for="is">IS (hh:mm):</label>
+            <input type="time" id="is" name="is">
+        </div>
+        <div class="input-group">
+            <label for="grupo">GRUPO (A-OZ):</label>
+            <input type="text" id="grupo" name="grupo" pattern="[A-OZ]{1,2}" title="Apenas letras de A a OZ">
+        </div>
     </div>
-
-    <div class="form-container">
-        <!-- Coluna Esquerda -->
+    <div class="row">
         <div class="column">
-            <div class="field">
-                <label for="ds">DS</label>
-                <input type="text" id="ds" name="ds" pattern="\d{2}:\d{2}" title="Formato hh:mm">
+            <div class="input-group">
+                <label for="ds">DS (hh:mm):</label>
+                <input type="time" id="ds" name="ds">
             </div>
-            <div class="line"></div>
-            <div class="field">
-                <label for="prof">Prof.</label>
-                <input type="text" id="prof" name="prof">
+            <div class="input-group">
+                <label for="prof">Prof.:</label>
+                <input type="number" id="prof" name="prof" step="0.1">
             </div>
-            <div class="line"></div>
-            <div class="field">
-                <label for="tf">TF</label>
-                <input type="text" id="tf" name="tf" pattern="\d{2}:\d{2}" title="Formato hh:mm">
+            <div class="input-group">
+                <label for="cf">CF (hh:mm):</label>
+                <input type="time" id="cf" name="cf">
             </div>
-            <div class="field">
-                <label for="cf">CF</label>
-                <input type="text" id="cf" name="cf" pattern="\d{2}:\d{2}" title="Formato hh:mm">
-            </div>
-            <div class="field">
-                <label for="df">DF</label>
-                <input type="text" id="df" name="df" pattern="\d{2}:\d{2}" title="Formato hh:mm">
+            <div class="input-group">
+                <label for="tf">TF (hh:mm):</label>
+                <input type="time" id="tf" name="tf">
             </div>
         </div>
-
-        <!-- Coluna Direita -->
         <div class="column">
-            <div class="field">
-                <label for="cs">CS</label>
-                <input type="text" id="cs" name="cs" pattern="\d{2}:\d{2}" title="Formato hh:mm">
+            <div class="input-group" style="align-self: flex-start;">
+                <label for="cs">CS (hh:mm):</label>
+                <input type="time" id="cs" name="cs">
             </div>
-            <div class="line"></div>
-            <div class="field">
-                <label for="s">S</label>
-                <input type="text" id="s" name="s" pattern="\d{2}:\d{2}" title="Formato hh:mm">
+            <div class="input-group" style="align-self: flex-end;">
+                <label for="s">S (hh:mm):</label>
+                <input type="time" id="s" name="s">
             </div>
-            <div class="field">
-                <label for="c">C</label>
-                <input type="text" id="c" name="c" pattern="\d{2}:\d{2}" title="Formato hh:mm">
+            <div class="input-group" style="align-self: flex-end;">
+                <label for="c">C (hh:mm):</label>
+                <input type="time" id="c" name="c">
             </div>
-            <div class="field">
-                <label for="ttd">TTD</label>
-                <input type="text" id="ttd" name="ttd" pattern="\d{2}:\d{2}" title="Formato hh:mm">
+            <div class="input-group" style="align-self: flex-end;">
+                <label for="ttd">TTD (hh:mm):</label>
+                <input type="time" id="ttd" name="ttd">
+            </div>
+            <div class="input-group" style="align-self: flex-end;">
+                <label for="df">DF (hh:mm):</label>
+                <input type="time" id="df" name="df">
             </div>
         </div>
     </div>
 
     <script>
-        document.querySelectorAll('input[pattern="\\d{2}:\\d{2}"]').forEach(input => {
-            input.addEventListener('input', function (e) {
-                if (this.value.length === 2 && !this.value.includes(':')) {
-                    this.value = this.value + ':';
-                }
-            });
-        });
+        function drawLine(fromElem, toElem, context) {
+            // Obter as posições dos elementos
+            const fromRect = fromElem.getBoundingClientRect();
+            const toRect = toElem.getBoundingClientRect();
+
+            // Calcular os pontos de início e fim (centro de cada elemento)
+            const fromX = fromRect.left + fromRect.width / 2 + window.scrollX; // Centro do primeiro input
+            const fromY = fromRect.top + fromRect.height / 2 + window.scrollY;  // Centro do primeiro input
+            const toX = toRect.left + toRect.width / 2 + window.scrollX;        // Centro do segundo input
+            const toY = toRect.top + toRect.height / 2 + window.scrollY;        // Centro do segundo input
+
+            // Desenhar a linha sem offset
+            context.beginPath();
+            context.moveTo(fromX, fromY);
+            context.lineTo(toX, toY);
+            context.strokeStyle = 'black';
+            context.lineWidth = 2;
+            context.stroke();
+        }
+
+        // Função para desenhar todas as linhas conectando os inputs
+        function connectInputs() {
+            const canvas = document.getElementById('canvas');
+            const context = canvas.getContext('2d');
+
+            // Definir tamanho do canvas como o da tela
+            canvas.width = document.documentElement.scrollWidth;
+            canvas.height = document.documentElement.scrollHeight;
+
+            // Limpar o canvas antes de desenhar as linhas
+            context.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Selecionar os campos de input
+            const ds = document.getElementById('ds');
+            const prof = document.getElementById('prof');
+            const cf = document.getElementById('cf');
+            const cs = document.getElementById('cs');
+            const df = document.getElementById('df');
+
+            // Conectar campos específicos
+            drawLine(ds, cf, context); // Linha entre DS e Prof.
+            drawLine(cf, df, context);   // Linha entre CF e CS.
+            drawLine(df, cs, context);   // Linha entre CS e DF.
+        }
+
+        // Chamar a função após carregar a página
+        window.onload = function () {
+            connectInputs();
+            window.addEventListener('resize', connectInputs); // Redesenhar as linhas ao redimensionar a tela
+        };
     </script>
+
 </body>
 
 </html>
